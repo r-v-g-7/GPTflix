@@ -6,7 +6,7 @@ const Header = () => {
       {/* Netflix Logo */}
       <div className="w-40 overflow-hidden mt-4">
         <img
-          className="w-[12rem] max-h-[10rem] object-contain [filter:brightness(1.7)]"
+          className="w-[12rem] max-h-[10rem] object-contain [filter:brightness(1.9)]"
           src="/app-logo.png"
           alt="GPTFLIX Logo"
         />
