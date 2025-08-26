@@ -1,6 +1,9 @@
 import React, { useRef, useState } from 'react'
 import Header from "./Header"
 import validation from '../utils/validation'
+import { auth } from '../utils/firebase'
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth'
+
 
 const Login = () => {
   const [signupForm, setSignupForm] = useState(false)
@@ -13,14 +16,27 @@ const Login = () => {
     setError(null) // Clear errors when switching forms
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
     const result = validation(email, password)
     setError(result)
     // Add your login logic here later
-  }
+    if (result) return;
+    try {
+      let userCredentials;
+      if (signupForm) {
+        userCredentials = await createUserWithEmailAndPassword(auth, email, password)
+      } else {
+        userCredentials = await signInWithEmailAndPassword(auth, email, password)
+      }
+      console.log(userCredentials.user);
+      return userCredentials.user
+    } catch (err) {
+      console.log("Auth Error: ", err.message)
+    }
+  }  // ✅ this was missing
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
@@ -36,8 +52,8 @@ const Login = () => {
           </p>
         </div>
 
-        {/* Login Form Container - Card Glow and Hover Pop */}
-        <div className="relative bg-black/70 backdrop-blur-xl rounded-3xl p-8 shadow-2xl border border-white/20 hover:border-red-500/40 transition-all duration-300 
+        {/* Login Form Container */}
+        <div className="relative bg-black/70 backdrop-blur-xl rounded-2xl p-8 shadow-2xl border border-white/20 hover:border-red-500/40 transition-all duration-300 
           before:absolute before:inset-0 before:rounded-3xl before:bg-gradient-to-br before:from-red-500/10 before:to-white/5 before:blur-2xl before:opacity-70 before:pointer-events-none 
           hover:scale-[1.015]">
 
@@ -102,7 +118,7 @@ const Login = () => {
                 />
               </div>
 
-              {/* Enhanced Error Message */}
+              {/* Error Message */}
               {error && (
                 <div className="animate-in slide-in-from-top duration-300 mb-4">
                   <div className="bg-red-500/20 border border-red-500/40 rounded-xl p-4 backdrop-blur-sm">
@@ -116,7 +132,7 @@ const Login = () => {
                 </div>
               )}
 
-              {/* Sign In Button */}
+              {/* Sign In / Up Button */}
               <button
                 type="submit"
                 className="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-semibold py-3.5 px-4 rounded-xl transition-all duration-200 transform hover:scale-[1.03] focus:outline-none focus:ring-2 focus:ring-red-500/50 shadow-xl"
@@ -125,7 +141,7 @@ const Login = () => {
               </button>
             </form>
 
-            {/* Forgot Password Link - Fixed positioning */}
+            {/* Forgot Password */}
             {!signupForm && (
               <div className="text-center mt-5">
                 <button
@@ -137,10 +153,10 @@ const Login = () => {
               </div>
             )}
 
-            {/* Add consistent spacing when no forgot password link */}
+            {/* Add spacing if signup */}
             {signupForm && <div className="mt-5"></div>}
 
-            {/* Divider - Bolder, Glow Effect */}
+            {/* Divider */}
             <div className="relative my-6">
               <div className="absolute inset-0 flex items-center">
                 <div className="w-full border-t border-white/30 shadow-[0_0_8px_0_rgba(220,38,38,0.12)]"></div>
@@ -159,7 +175,7 @@ const Login = () => {
                 <button
                   type="button"
                   className="text-white hover:text-red-400 font-medium underline underline-offset-2 transition-colors duration-200 hover:no-underline"
-                  onClick={() => handleSignupForm()}
+                  onClick={handleSignupForm}
                 >
                   {signupForm ? 'Sign In' : 'Sign Up'}
                 </button>
