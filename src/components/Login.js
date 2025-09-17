@@ -4,20 +4,15 @@ import { supabase } from '../supabaseClient'
 
 const Login = () => {
   const [signupForm, setSignupForm] = useState(false)
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
   const [user, setUser] = useState(null)
 
   const emailRef = useRef(null)
   const passwordRef = useRef(null)
+  const nameRef = useRef(null)
+  const ageRef = useRef(null)
 
   const handleSignupForm = () => {
     setSignupForm(!signupForm)
-  }
-
-  const handleSignUp = async (e) => {
-    e.preventDefault()
-    setEmail()
   }
 
   const handleSubmit = async (e) => {
@@ -30,12 +25,22 @@ const Login = () => {
       if (error) {
         alert(error.message)
       } else {
+        const name = nameRef.current.value;
+        const age = ageRef.current.value;
         alert("Signed up successfully, check your email to make sure it's you.")
         console.log("Signup: ", data)
         setUser(data.user);
+
+        if (data.user) {
+          await supabase.from("userProfiles").insert({
+            id: data.user.id,
+            name: name,
+            age: parseInt(age, 10)
+          });
+        }
       }
     } else {
-      const { data, error } = await supabase.auth.signInWithPassword(email, password)
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password })
       if (error) {
         alert(error.message)
       } else {
@@ -45,7 +50,17 @@ const Login = () => {
       }
     }
 
-    console.log('Form submitted:', { email, password })
+    console.log('Form submitted:', {
+      email,
+      password
+    })
+  }
+
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut()
+    setUser(null)
+    alert("Signed out successfully")
   }
 
   // Write the signOut logic too.......
@@ -53,9 +68,6 @@ const Login = () => {
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
       <Header />
-
-      {/* Remove the background gradient - let Body.jsx handle it */}
-      {/* Remove ambient background effects - they conflict with Body's background */}
 
       <div className="w-full max-w-md mx-auto relative z-10">
         {/* Enhanced Header */}
@@ -68,20 +80,20 @@ const Login = () => {
           </p>
         </div>
 
-        {/* Enhanced Login Form Container */}
-        <div className="relative bg-black/60 backdrop-blur-xl rounded-2xl p-8 shadow-2xl border border-white/10 
+        {/* Enhanced Login Form Container - Moderately Increased Height */}
+        <div className="relative bg-black/60 backdrop-blur-xl rounded-2xl px-8 py-12 shadow-2xl border border-white/10 
           hover:border-red-500/30 transition-all duration-500 hover:shadow-red-500/10 hover:shadow-xl
           before:absolute before:inset-0 before:rounded-2xl before:bg-gradient-to-br 
           before:from-red-500/10 before:via-transparent before:to-white/5 
           before:blur-xl before:opacity-40 before:pointer-events-none 
-          hover:scale-[1.01] group hover:bg-black/70">
+          hover:scale-[1.01] group hover:bg-black/70 min-h-[26rem]">
 
           {/* Subtle inner glow */}
           <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-red-500/3 to-white/3 opacity-0 
             group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
 
-          <div className="relative z-10">
-            <form onSubmit={handleSubmit} className="space-y-5">
+          <div className="relative z-10 h-full flex flex-col justify-center">
+            <form onSubmit={handleSubmit} className="space-y-6">
               {/* Enhanced Name Input */}
               {signupForm && (
                 <div className="animate-in slide-in-from-top duration-300">
@@ -89,9 +101,10 @@ const Login = () => {
                     id="name"
                     name="name"
                     type="text"
+                    ref={nameRef}
                     autoComplete="name"
                     required
-                    className="w-full px-4 py-3.5 bg-white/5 border border-white/20 rounded-xl text-white 
+                    className="w-full px-4 py-4 bg-white/5 border border-white/20 rounded-xl text-white 
                       placeholder-gray-500 text-sm focus:ring-1 focus:ring-red-500/40 focus:border-red-500/40 
                       focus:bg-white/10 outline-none transition-all duration-200 hover:bg-white/8 
                       hover:border-white/30 backdrop-blur-sm"
@@ -108,10 +121,11 @@ const Login = () => {
                     name="age"
                     type="number"
                     autoComplete="age"
+                    ref={ageRef}
                     required
                     min="13"
                     max="120"
-                    className="w-full px-4 py-3.5 bg-white/5 border border-white/20 rounded-xl text-white 
+                    className="w-full px-4 py-4 bg-white/5 border border-white/20 rounded-xl text-white 
                       placeholder-gray-500 text-sm focus:ring-1 focus:ring-red-500/40 focus:border-red-500/40 
                       focus:bg-white/10 outline-none transition-all duration-200 hover:bg-white/8 
                       hover:border-white/30 backdrop-blur-sm"
@@ -129,7 +143,7 @@ const Login = () => {
                   ref={emailRef}
                   autoComplete="username"
                   required
-                  className="w-full px-4 py-3.5 bg-white/5 border border-white/20 rounded-xl text-white 
+                  className="w-full px-4 py-4 bg-white/5 border border-white/20 rounded-xl text-white 
                     placeholder-gray-500 text-sm focus:ring-1 focus:ring-red-500/40 focus:border-red-500/40 
                     focus:bg-white/10 outline-none transition-all duration-200 hover:bg-white/8 
                     hover:border-white/30 backdrop-blur-sm"
@@ -146,7 +160,7 @@ const Login = () => {
                   ref={passwordRef}
                   autoComplete="current-password"
                   required
-                  className="w-full px-4 py-3.5 bg-white/5 border border-white/20 rounded-xl text-white 
+                  className="w-full px-4 py-4 bg-white/5 border border-white/20 rounded-xl text-white 
                     placeholder-gray-500 text-sm focus:ring-1 focus:ring-red-500/40 focus:border-red-500/40 
                     focus:bg-white/10 outline-none transition-all duration-200 hover:bg-white/8 
                     hover:border-white/30 backdrop-blur-sm"
@@ -159,7 +173,7 @@ const Login = () => {
                 type="submit"
                 className="w-full bg-gradient-to-r from-red-600 to-red-700 
                   hover:from-red-700 hover:to-red-800 
-                  text-white font-semibold py-3.5 px-4 mt-7
+                  text-white font-semibold py-4 px-4 mt-8
                   rounded-xl transition-all duration-200 transform hover:scale-[1.01] 
                   focus:outline-none focus:ring-2 focus:ring-red-500/30 shadow-lg 
                   shadow-red-600/20 hover:shadow-red-600/30 text-sm active:scale-[0.99]"
@@ -170,7 +184,7 @@ const Login = () => {
 
             {/* Enhanced Forgot Password */}
             {!signupForm && (
-              <div className="text-center mt-5">
+              <div className="text-center mt-6">
                 <button
                   type="button"
                   className="text-gray-500 hover:text-gray-300 text-xs transition-all duration-200 
@@ -182,7 +196,7 @@ const Login = () => {
             )}
 
             {/* Enhanced Divider */}
-            <div className="relative my-6">
+            <div className="relative my-8">
               <div className="absolute inset-0 flex items-center">
                 <div className="w-full border-t border-white/20"></div>
               </div>
