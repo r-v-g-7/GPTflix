@@ -1,8 +1,10 @@
 import React, { useRef, useState } from 'react'
 import Header from "./Header"
 import { supabase } from '../supabaseClient'
+import { useDispatch } from 'react-redux'
 
 const Login = () => {
+  const dispatch = useDispatch()
   const [signupForm, setSignupForm] = useState(false)
   const [user, setUser] = useState(null)
 
@@ -14,6 +16,7 @@ const Login = () => {
   const handleSignupForm = () => {
     setSignupForm(!signupForm)
   }
+
 
   const handleSubmit = async (e) => {
     e.preventDefault()
