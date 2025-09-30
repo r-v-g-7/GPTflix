@@ -1,12 +1,40 @@
-import React, { useRef, useState } from 'react'
-import Header from "./Header"
+import React, { useEffect, useRef, useState } from 'react'
+import Header from './Header'
 import { supabase } from '../supabaseClient'
-import { useDispatch } from 'react-redux'
+import { Navigate, useNavigate } from 'react-router'
+
 
 const Login = () => {
-  const dispatch = useDispatch()
+  const navigate = useNavigate();
   const [signupForm, setSignupForm] = useState(false)
   const [user, setUser] = useState(null)
+
+  useEffect(() => {
+    const getUserSession = async () => {
+      const { data, error } = await supabase.auth.getSession()
+      if (error) {
+        console.error("Error getting session: " + error.message)
+        return;
+      }
+      setUser(data.session?.user ?? null)
+    }
+
+    getUserSession();
+
+    const { data: subscription } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        console.log("event:" + _event);
+        console.log("session: " + session);
+        setUser(session?.user ?? null);
+      }
+    )
+
+    return () => {
+      subscription?.subscription?.unsubscribe()
+    }
+  }, [])
+
+
 
   const emailRef = useRef(null)
   const passwordRef = useRef(null)
@@ -14,7 +42,9 @@ const Login = () => {
   const ageRef = useRef(null)
 
   const handleSignupForm = () => {
-    setSignupForm(!signupForm)
+    setSignupForm(!signupForm);
+    emailRef.current.value = null
+    passwordRef.current.value = null;
   }
 
 
@@ -50,6 +80,7 @@ const Login = () => {
         alert("SignIn successfull! Keep streaming")
         console.log("SignIn Data: ", data)
         setUser(data.user)
+        navigate("/browse")
       }
     }
 

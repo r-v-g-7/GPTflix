@@ -2,6 +2,7 @@ import React from 'react'
 import Browse from './Browse'
 import Login from './Login'
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
+import Header from './Header'
 
 const Body = () => {
   const appRouter = createBrowserRouter([
@@ -17,6 +18,7 @@ const Body = () => {
 
   return (
     <div className="relative min-h-screen w-full overflow-hidden">
+      <Header />
       {/* Netflix Background */}
       <img
         src="https://assets.nflxext.com/ffe/siteui/vlv3/3e4bd046-85a3-40e1-842d-fa11cec84349/web/IN-en-20250818-TRIFECTA-perspective_4bd1b66d-bbb6-4bc6-ba8f-ecbba53a1278_medium.jpg"
