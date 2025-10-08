@@ -1,23 +1,17 @@
-import React, { useEffect } from 'react'
 import Header from './Header'
-import { getNowPlayingMoviesUrl } from '../utils/tmdb'
 import { BACKGROUND_IMAGE } from '../utils/constants'
+import useNowPlayingMovies from '../hooks/useNowPlayingMovies'
+import { useSelector } from 'react-redux'
+import { useEffect } from 'react'
 
 const Browse = () => {
-  const getNowPlayingMovies = async () => {
-    try {
-      const getNowPlayingMoviesData = await fetch(getNowPlayingMoviesUrl)
-      if (!getNowPlayingMoviesData.ok) throw new Error("Failed to fetch movies");
-      const getNowPlayingMoviesJson = await getNowPlayingMoviesData.json()
-      console.log(getNowPlayingMoviesJson.results);
-    } catch (err) {
-      console.error("Error fetching the movies: ", err)
-    }
-  }
+
+  useNowPlayingMovies()
+  const nowPlayingMovies = useSelector(state => state.movies);
 
   useEffect(() => {
-    getNowPlayingMovies()
-  }, [])
+    console.log(nowPlayingMovies)
+  }, [nowPlayingMovies])
 
 
   return (
