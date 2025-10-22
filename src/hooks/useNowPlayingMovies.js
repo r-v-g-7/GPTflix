@@ -11,7 +11,6 @@ const useNowPlayingMovies = () => {
             const getNowPlayingMoviesData = await fetch(getNowPlayingMoviesUrl)
             if (!getNowPlayingMoviesData.ok) throw new Error("Failed to fetch movies");
             const getNowPlayingMoviesJson = await getNowPlayingMoviesData.json()
-            console.log(getNowPlayingMoviesJson.results);
             dispatch(setNowPlayingMovies(getNowPlayingMoviesJson.results))
         } catch (err) {
             console.error("Error fetching the movies: ", err)

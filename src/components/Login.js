@@ -1,8 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Header from './Header'
 import { supabase } from '../supabaseClient'
-import { Navigate, useNavigate } from 'react-router'
-
+import { useNavigate } from 'react-router'
 
 const Login = () => {
   const navigate = useNavigate();
@@ -24,7 +23,7 @@ const Login = () => {
     const { data: subscription } = supabase.auth.onAuthStateChange(
       (_event, session) => {
         console.log("event:" + _event);
-        console.log("session: " + session);
+        console.log("session:" + session);
         setUser(session?.user ?? null);
       }
     )
@@ -101,7 +100,8 @@ const Login = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
-      <Header />
+
+      <Header user={user} />
 
       <div className="w-full max-w-md mx-auto relative z-10">
         {/* Enhanced Header */}
