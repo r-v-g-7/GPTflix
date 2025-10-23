@@ -1,8 +1,11 @@
 import React from 'react'
+import MovieCard from './MovieCard'
 
 const SecondaryContainer = () => {
   return (
-    <div>SecondaryContainer</div>
+    <div>
+      <MovieCard />
+    </div>
   )
 }
 

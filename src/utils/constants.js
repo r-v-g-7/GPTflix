@@ -8,3 +8,5 @@ export const TMDB_OPTIONS = {
   }
 };
 
+export const MOVIES_POSTER_URL = "https://image.tmdb.org/t/p/w500"
+

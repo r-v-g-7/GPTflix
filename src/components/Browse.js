@@ -3,18 +3,14 @@ import useNowPlayingMovies from '../hooks/useNowPlayingMovies'
 import MainContainer from './MainContainer'
 
 const Browse = () => {
-
   useNowPlayingMovies()
 
   return (
-    <div className="p-10 text-white">
-      <div className='flex justify-between'>
-        <Header />
-        <MainContainer />
-      </div>
+    <div className="text-white relative">
+      <Header /> {/* fixed header */}
+      <MainContainer /> {/* starts from top, will go behind header */}
     </div>
   )
 }
-
 
 export default Browse

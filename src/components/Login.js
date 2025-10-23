@@ -113,6 +113,7 @@ const Login = () => {
     <div className="min-h-screen flex items-center justify-center p-4">
 
       <Header user={user} />
+      {console.log("User in Login:", user ?? "No user yet")}
 
       <div className="w-full max-w-md mx-auto relative z-10">
         {/* Enhanced Header */}
