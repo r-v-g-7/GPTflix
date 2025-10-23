@@ -28,8 +28,8 @@ const Login = () => {
 
     const { data: subscription } = supabase.auth.onAuthStateChange(
       (_event, session) => {
-        console.log("event:", _event);
-        console.log("session:", session);
+        // console.log("event:", _event);
+        // console.log("session:", session);
         if (session && session.user) {
           setUser(session.user);
         } else {
@@ -71,7 +71,7 @@ const Login = () => {
         const name = nameRef.current.value;
         const age = ageRef.current.value;
         alert("Signed up successfully, check your email to make sure it's you.")
-        console.log("Signup: ", data)
+        // console.log("Signup: ", data)
         setUser(data.user);
 
         if (data.user) {
@@ -88,16 +88,16 @@ const Login = () => {
         alert(error.message)
       } else {
         alert("SignIn successfull! Keep streaming")
-        console.log("SignIn Data: ", data)
+        // console.log("SignIn Data: ", data)
         setUser(data.user)
         navigate("/browse")
       }
     }
 
-    console.log('Form submitted:', {
-      email,
-      password
-    })
+    //   console.log('Form submitted:', {
+    //     email,
+    //     password
+    //   })
   }
 
 
