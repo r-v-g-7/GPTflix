@@ -4,11 +4,10 @@ import SecondaryContainer from './SecondaryContainer'
 
 const MainContainer = () => {
     return (
-        <div className="w-full overflow-x-hidden">
+        <div className="w-full mt-0">
             <PrimaryContainer />
             <SecondaryContainer />
         </div>
-
     )
 }
 

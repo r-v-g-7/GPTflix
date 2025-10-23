@@ -10,28 +10,39 @@ const Login = () => {
 
   useEffect(() => {
     const getUserSession = async () => {
-      const { data, error } = await supabase.auth.getSession()
+      const { data, error } = await supabase.auth.getSession();
       if (error) {
-        console.error("Error getting session: " + error.message)
+        console.error("Error getting session:", error.message);
         return;
       }
-      setUser(data.session?.user ?? null)
-    }
+
+      // Only set user if a valid session with a user exists
+      if (data.session && data.session.user) {
+        setUser(data.session.user);
+      } else {
+        setUser(null);
+      }
+    };
 
     getUserSession();
 
     const { data: subscription } = supabase.auth.onAuthStateChange(
       (_event, session) => {
-        console.log("event:" + _event);
-        console.log("session:" + session);
-        setUser(session?.user ?? null);
+        console.log("event:", _event);
+        console.log("session:", session);
+        if (session && session.user) {
+          setUser(session.user);
+        } else {
+          setUser(null);
+        }
       }
-    )
+    );
 
     return () => {
-      subscription?.subscription?.unsubscribe()
-    }
-  }, [])
+      subscription?.subscription?.unsubscribe();
+    };
+  }, []);
+
 
 
 
