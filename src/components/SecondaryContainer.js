@@ -5,6 +5,13 @@ const SecondaryContainer = () => {
   return (
     <div>
       <MovieCard />
+      <MovieCard />
+      <MovieCard />
+      <MovieCard />
+      <MovieCard />
+      <MovieCard />
+      <MovieCard />
+      <MovieCard />
     </div>
   )
 }
