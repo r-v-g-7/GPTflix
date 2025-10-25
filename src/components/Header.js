@@ -4,15 +4,13 @@ import { Sparkles } from "lucide-react"; // ✨ for a “smart AI” feel
 import { useDispatch } from "react-redux";
 import { setGptSearchToggle } from "../utils/gptSlice";
 import { useNavigate } from "react-router";
-import { useSelector } from "react-redux";
 
 const Header = ({ userInfo }) => {
   const dispatch = useDispatch();
-  const gptSearchToggle = useSelector((item) => item.gpt.gptSearchToggle)
   const navigate = useNavigate()
 
   const handleGptSearch = () => {
-    dispatch(setGptSearchToggle(true))
+    dispatch(setGptSearchToggle())
     navigate("/gpt-search")
   }
 
@@ -45,7 +43,7 @@ const Header = ({ userInfo }) => {
         />
 
         {/* Sign Out */}
-        <button className="bg-black/60 text-white text-sm px-3 py-1 rounded hover:bg-black/80 transition font-medium">
+        <button className="text-white text-sm px-0 py-1 rounded transition font-medium pb-2">
           Sign Out
         </button>
       </div>}
