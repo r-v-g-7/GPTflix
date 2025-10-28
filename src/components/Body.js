@@ -1,20 +1,14 @@
 import Browse from "./Browse";
 import Login from "./Login";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import GptSearch from "./GptSearch";
-import Header from "./Header";
 import { useSelector } from "react-redux";
 import { Outlet } from "react-router-dom";
 
 
 const Body = () => {
 
-  const userInfo = useSelector((item) => item.user.userInfo)
-  console.log(userInfo);
-
   const Layout = () => (
     <div className="relative w-full min-h-screen overflow-auto scrollbar-netflix">
-      <Header userInfo={userInfo} />
       <div className="relative z-10">
         <Outlet /> {/* route content renders here */}
       </div>
@@ -28,7 +22,6 @@ const Body = () => {
       children: [
         { path: "/", element: <Login /> },
         { path: "/browse", element: <Browse /> },
-        { path: "/gpt-search", element: <GptSearch /> }
       ]
     }
   ]);

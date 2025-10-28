@@ -1,15 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react'
-import Header from './Header'
 import { supabase } from '../supabaseClient'
 import { useNavigate } from 'react-router'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { setUserInfo } from '../utils/userSlice'
+import Header from './Header'
+import LoginShimmer from './LoginShimmer'
 
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [signupForm, setSignupForm] = useState(false)
   const [user, setUser] = useState(null)
+  const userInfo = useSelector((state => state.user.userInfo));
 
   useEffect(() => {
     const getUserSession = async () => {
@@ -109,16 +111,21 @@ const Login = () => {
   }
 
 
-  const handleSignOut = async () => {
-    await supabase.auth.signOut()
-    setUser(null)
-    alert("Signed out successfully")
-  }
+  // const handleSignOut = async () => {
+  //   await supabase.auth.signOut()
+  //   setUser(null)
+  //   alert("Signed out successfully")
+  // }
 
   // Write the signOut logic too.......
 
+  // if (!userInfo)  return <LoginShimmer />
+
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
+
+
+      <Header />
 
       <div className="w-full max-w-md mx-auto relative z-10">
         {/* Enhanced Header */}

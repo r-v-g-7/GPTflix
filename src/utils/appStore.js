@@ -8,7 +8,6 @@ const appStore = configureStore({
         movies: movieReducer,
         gpt: gptReducer,
         user: userReducer,
-    }
+    },
 })
-
 export default appStore
