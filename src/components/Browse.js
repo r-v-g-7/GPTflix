@@ -6,7 +6,6 @@ import Header from './Header'
 
 const Browse = () => {
   const gptSearchToggle = useSelector((state) => state.gpt.gptSearchToggle)
-  const userInfo = useSelector((state) => state.user.userInfo)
 
   // Custom hook to fetch and store now-playing movies
   useNowPlayingMovies()
@@ -14,7 +13,6 @@ const Browse = () => {
   return (
     <div className="text-white relative">
 
-      <Header userInfo={userInfo} />
       {gptSearchToggle ? (
         <GptSearch />
       ) : (

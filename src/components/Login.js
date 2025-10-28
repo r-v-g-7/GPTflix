@@ -71,11 +71,10 @@ const Login = () => {
     if (signupForm) {
       const { error, data } = await supabase.auth.signUp({ email, password })
       if (error) {
-        alert(error.message)
+        alert("Login failed: Aur do modi ko vote");
       } else {
         const name = nameRef.current.value;
         const age = ageRef.current.value;
-        alert("Signed up successfully, check your email to make sure it's you.")
         // console.log("Signup: ", data)
         setUser(data.user);
 
@@ -90,9 +89,8 @@ const Login = () => {
     } else {
       const { data, error } = await supabase.auth.signInWithPassword({ email, password })
       if (error) {
-        alert(error.message)
+        alert("Login failed: Aur do modi ko vote");
       } else {
-        alert("SignIn successfull! Keep streaming")
         // console.log("SignIn Data: ", data)
         if (data.user) {
           setUser(data.user)

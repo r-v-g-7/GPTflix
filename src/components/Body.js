@@ -1,7 +1,6 @@
 import Browse from "./Browse";
 import Login from "./Login";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { useSelector } from "react-redux";
 import { Outlet } from "react-router-dom";
 
 
